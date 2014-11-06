@@ -12,6 +12,8 @@
 #import "CodeBuilder.h"
 #import "NSBezierPathCodeBuilder.h"
 #import "CGPathRefCodeBuilder.h"
+#import "CCActionToCodeBuilder.h"
+#import "CCActionByCodeBuilder.h"
 
 @implementation MyDocument
 
@@ -23,11 +25,26 @@
 - (void) rebuildSteps {
 	
 	Class builderClass = Nil;
-	if ([codeStyleControl selectedSegment] == 0) {
-		builderClass = [NSBezierPathCodeBuilder class];
-	}
-	else {
-		builderClass = [CGPathRefCodeBuilder class];
+	
+	switch ([codeStyleControl selectedSegment]) {
+		case 0:
+			builderClass = [NSBezierPathCodeBuilder class];
+			break;
+			
+		case 1:
+			builderClass = [CGPathRefCodeBuilder class];
+			break;
+			
+		case 2:
+			builderClass = [CCActionToCodeBuilder class];
+			break;
+			
+		case 3:
+			builderClass = [CCActionByCodeBuilder class];
+			break;
+			
+		default:
+			break;
 	}
 	
 	CodeBuilder *builder = [[builderClass alloc] init];

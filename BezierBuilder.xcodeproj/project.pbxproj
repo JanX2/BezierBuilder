@@ -19,6 +19,8 @@
 		8D15AC310486D014006FF6A4 /* MyDocument.m in Sources */ = {isa = PBXBuildFile; fileRef = 2A37F4ACFDCFA73011CA2CEA /* MyDocument.m */; settings = {ATTRIBUTES = (); }; };
 		8D15AC320486D014006FF6A4 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 2A37F4B0FDCFA73011CA2CEA /* main.m */; settings = {ATTRIBUTES = (); }; };
 		8D15AC340486D014006FF6A4 /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1058C7A7FEA54F5311CA2CBB /* Cocoa.framework */; };
+		E4AE10BA1A0BC41A00571930 /* CCActionToCodeBuilder.m in Sources */ = {isa = PBXBuildFile; fileRef = E4AE10B91A0BC41A00571930 /* CCActionToCodeBuilder.m */; };
+		E4AE10BD1A0BCAA500571930 /* CCActionByCodeBuilder.m in Sources */ = {isa = PBXBuildFile; fileRef = E4AE10BC1A0BCAA500571930 /* CCActionByCodeBuilder.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -46,6 +48,10 @@
 		5541054F1004346F0079AF28 /* BezierView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BezierView.m; sourceTree = "<group>"; };
 		8D15AC360486D014006FF6A4 /* BezierBuilder-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "BezierBuilder-Info.plist"; sourceTree = "<group>"; };
 		8D15AC370486D014006FF6A4 /* BezierBuilder.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = BezierBuilder.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		E4AE10B81A0BC41A00571930 /* CCActionToCodeBuilder.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CCActionToCodeBuilder.h; sourceTree = "<group>"; };
+		E4AE10B91A0BC41A00571930 /* CCActionToCodeBuilder.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CCActionToCodeBuilder.m; sourceTree = "<group>"; };
+		E4AE10BB1A0BCAA500571930 /* CCActionByCodeBuilder.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CCActionByCodeBuilder.h; sourceTree = "<group>"; };
+		E4AE10BC1A0BCAA500571930 /* CCActionByCodeBuilder.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CCActionByCodeBuilder.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -151,6 +157,10 @@
 				551E00EB12F92B0400143DD3 /* NSBezierPathCodeBuilder.m */,
 				551E00FA12F92E0C00143DD3 /* CGPathRefCodeBuilder.h */,
 				551E00FB12F92E0C00143DD3 /* CGPathRefCodeBuilder.m */,
+				E4AE10B81A0BC41A00571930 /* CCActionToCodeBuilder.h */,
+				E4AE10B91A0BC41A00571930 /* CCActionToCodeBuilder.m */,
+				E4AE10BB1A0BCAA500571930 /* CCActionByCodeBuilder.h */,
+				E4AE10BC1A0BCAA500571930 /* CCActionByCodeBuilder.m */,
 			);
 			name = Builders;
 			sourceTree = "<group>";
@@ -227,7 +237,9 @@
 				554105501004346F0079AF28 /* BezierView.m in Sources */,
 				551E00DA12F928AA00143DD3 /* BezierPoint.m in Sources */,
 				551E00E912F92AD000143DD3 /* CodeBuilder.m in Sources */,
+				E4AE10BD1A0BCAA500571930 /* CCActionByCodeBuilder.m in Sources */,
 				551E00EC12F92B0400143DD3 /* NSBezierPathCodeBuilder.m in Sources */,
+				E4AE10BA1A0BC41A00571930 /* CCActionToCodeBuilder.m in Sources */,
 				551E00FC12F92E0C00143DD3 /* CGPathRefCodeBuilder.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

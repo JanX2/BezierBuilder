@@ -13,4 +13,19 @@
 @synthesize mainPoint;
 @synthesize controlPoint1, controlPoint2;
 
+- (void) encodeWithCoder:(NSCoder *)encoder {
+	[encoder encodePoint:self.mainPoint forKey:@"MainPoint"];
+	[encoder encodePoint:self.controlPoint1 forKey:@"ControlPoint1"];
+	[encoder encodePoint:self.controlPoint2 forKey:@"ControlPoint2"];
+}
+
+- (id)initWithCoder:(NSCoder *)decoder {
+	if (self = [super init]) {
+		self.mainPoint = [decoder decodePointForKey:@"MainPoint"];
+		self.controlPoint1 = [decoder decodePointForKey:@"ControlPoint1"];
+		self.controlPoint2 = [decoder decodePointForKey:@"ControlPoint2"];
+	}
+	return self;
+}
+
 @end

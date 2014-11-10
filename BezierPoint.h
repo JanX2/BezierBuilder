@@ -8,8 +8,9 @@
 
 #import <Foundation/Foundation.h>
 
+#define kDataKey @"DataPoints"
 
-@interface BezierPoint : NSObject {
+@interface BezierPoint : NSObject <NSCoding> {
 
 }
 

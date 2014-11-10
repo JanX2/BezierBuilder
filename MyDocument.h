@@ -26,5 +26,6 @@
 @property (assign) IBOutlet NSSegmentedControl *codeStyleControl;
 
 - (IBAction) codeOptionChanged:(id)sender;
+- (IBAction) delleteAll:(id)sender;
 
 @end

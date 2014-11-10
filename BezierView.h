@@ -27,4 +27,6 @@
 @property (nonatomic, assign) id<BezierViewDelegate> delegate;
 @property (nonatomic, readonly) NSArray * bezierPoints;
 
+- (void)deleteAll:(id)sender;
+
 @end

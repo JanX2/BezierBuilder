@@ -57,10 +57,17 @@
 	}
 	[bezierCodeView setString:[builder codeForBezierPoints]];
 	[builder release];
+	
+	NSData *data = [NSKeyedArchiver archivedDataWithRootObject:[bezierView bezierPoints]];
+	[[NSUserDefaults standardUserDefaults] setObject:data forKey:kDataKey];
 }
 
 - (void) codeOptionChanged:(id)sender {
 	[self rebuildSteps];
+}
+
+- (IBAction)delleteAll:(id)sender {
+	[bezierView deleteAll:sender];
 }
 
 - (void) elementsDidChangeInBezierView:(BezierView *)view {

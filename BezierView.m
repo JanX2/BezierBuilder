@@ -36,7 +36,13 @@ NSPoint NSScaledPoint(NSPoint point, float scale) {
 @synthesize delegate, bezierPoints;
 
 - (void) awakeFromNib {
-	bezierPoints = [[NSMutableArray alloc] init];
+	NSData *codedData = [[NSUserDefaults standardUserDefaults] objectForKey:kDataKey];
+	
+	if (codedData)
+		bezierPoints = [[NSKeyedUnarchiver unarchiveObjectWithData:codedData] retain];
+	else
+		bezierPoints = [[NSMutableArray alloc] init];
+	
 	editingPoint = NSMakePoint(-1, -1);
 	
 	[[NSNotificationCenter defaultCenter] addObserver:self
@@ -225,6 +231,11 @@ NSPoint NSScaledPoint(NSPoint point, float scale) {
 		[bezierPoints removeLastObject];
 		[[self delegate] elementsDidChangeInBezierView:self];
 	}
+}
+
+- (void)deleteAll:(id)sender {
+	[bezierPoints removeAllObjects];
+	[[self delegate] elementsDidChangeInBezierView:self];
 }
 
 - (void)keyDown:(NSEvent *)theEvent {

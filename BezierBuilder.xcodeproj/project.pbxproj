@@ -192,7 +192,7 @@
 		2A37F4A9FDCFA73011CA2CEA /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
-				LastUpgradeCheck = 0610;
+				LastUpgradeCheck = 0730;
 			};
 			buildConfigurationList = C05733CB08A9546B00998B17 /* Build configuration list for PBXProject "BezierBuilder" */;
 			compatibilityVersion = "Xcode 3.2";
@@ -296,6 +296,7 @@
 				GCC_PREFIX_HEADER = BezierBuilder_Prefix.pch;
 				INFOPLIST_FILE = "BezierBuilder-Info.plist";
 				INSTALL_PATH = "$(HOME)/Applications";
+				PRODUCT_BUNDLE_IDENTIFIER = "com.yourcompany.${PRODUCT_NAME:rfc1034identifier}";
 				PRODUCT_NAME = BezierBuilder;
 			};
 			name = Debug;
@@ -311,6 +312,7 @@
 				GCC_PREFIX_HEADER = BezierBuilder_Prefix.pch;
 				INFOPLIST_FILE = "BezierBuilder-Info.plist";
 				INSTALL_PATH = "$(HOME)/Applications";
+				PRODUCT_BUNDLE_IDENTIFIER = "com.yourcompany.${PRODUCT_NAME:rfc1034identifier}";
 				PRODUCT_NAME = BezierBuilder;
 			};
 			name = Release;
@@ -318,6 +320,7 @@
 		C05733CC08A9546B00998B17 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ENABLE_TESTABILITY = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_OPTIMIZATION_LEVEL = 0;
 				GCC_WARN_ABOUT_RETURN_TYPE = YES;

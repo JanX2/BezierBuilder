@@ -27,7 +27,7 @@
 			CGPoint control1 = {point.controlPoint1.x-startPoint.x, point.controlPoint1.y-startPoint.y};
 			CGPoint control2 = {point.controlPoint2.x-startPoint.x, point.controlPoint2.y-startPoint.y};
 			[lines addObject:[NSString stringWithFormat:@"\t[CCActionBezierBy actionWithDuration:%c#(CCTime)#%c bezier:{\n\t\tccp(%0.2f, %0.2f), ccp(%0.2f, %0.2f), ccp(%0.2f, %0.2f)\t}]\t // normalized control points: %0.2f, %0.2f, %0.2f, %0.2f",
-							  60, 62, // ascii codes for '<' and '>'
+							  '<', '>',
 							  endPoint.x, endPoint.y,
 							  control1.x, control1.y,
 							  control2.x, control2.y,

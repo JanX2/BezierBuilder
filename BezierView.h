@@ -21,10 +21,10 @@
 	NSMutableArray *bezierPoints;
 	NSPoint editingPoint;
 	
-	IBOutlet id<BezierViewDelegate> delegate;
+	IBOutlet id<BezierViewDelegate> __weak delegate;
 }
 
-@property (nonatomic, assign) id<BezierViewDelegate> delegate;
+@property (nonatomic, weak) id<BezierViewDelegate> delegate;
 @property (nonatomic, readonly) NSArray * bezierPoints;
 
 - (void)deleteAll:(id)sender;

@@ -49,7 +49,7 @@
 		}
 	}
 	
-	return [bp autorelease];
+	return bp;
 }
 
 @end

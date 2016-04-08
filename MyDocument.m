@@ -56,7 +56,6 @@
 		builder.yOrigin = 0.0;
 	}
 	bezierCodeView.string = [builder codeForBezierPoints];
-	[builder release];
 	
 	NSData *data = [NSKeyedArchiver archivedDataWithRootObject:bezierView.bezierPoints];
 	[[NSUserDefaults standardUserDefaults] setObject:data forKey:kDataKey];

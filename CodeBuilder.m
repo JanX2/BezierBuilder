@@ -33,7 +33,6 @@
 			newPoint.controlPoint1 = newC1;
 			newPoint.controlPoint2 = newC2;
 			[effectivePoints addObject:newPoint];
-			[newPoint release];
 		}
 		return effectivePoints;
 	}
@@ -47,11 +46,6 @@
 - (id) objectForBezierPoints {
 	NSLog(@"SUBCLASSES MUST OVERRIDE");
 	return nil;
-}
-
-- (void)dealloc {
-	[bezierPoints release];
-	[super dealloc];
 }
 
 @end

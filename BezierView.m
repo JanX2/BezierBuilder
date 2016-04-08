@@ -39,7 +39,7 @@ NSPoint NSScaledPoint(NSPoint point, float scale) {
 	NSData *codedData = [[NSUserDefaults standardUserDefaults] objectForKey:kDataKey];
 	
 	if (codedData)
-		bezierPoints = [[NSKeyedUnarchiver unarchiveObjectWithData:codedData] retain];
+		bezierPoints = [NSKeyedUnarchiver unarchiveObjectWithData:codedData];
 	else
 		bezierPoints = [[NSMutableArray alloc] init];
 	
@@ -203,7 +203,6 @@ NSPoint NSScaledPoint(NSPoint point, float scale) {
 		newPoint.controlPoint1 = control1;
 		newPoint.controlPoint2 = control2;
 		[bezierPoints addObject:newPoint];
-		[newPoint release];
 		
 		[self.delegate elementsDidChangeInBezierView:self];
 		
@@ -271,18 +270,12 @@ NSPoint NSScaledPoint(NSPoint point, float scale) {
 		[extra appendBezierPathWithOvalInRect:r];
 	}
 	[extra stroke];
-	[extra release];
 	
 	[[NSColor blackColor] set];
 	NSBezierPathCodeBuilder *builder = [[NSBezierPathCodeBuilder alloc] init];
 	builder.bezierPoints = bezierPoints;
 	NSBezierPath * path = [builder objectForBezierPoints];
 	[path stroke];
-}
-
-- (void) dealloc {
-	[bezierPoints release];
-	[super dealloc];
 }
 
 @end

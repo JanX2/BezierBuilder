@@ -14,16 +14,16 @@
 	BezierView * bezierView;
 	NSTextView * bezierCodeView;
 	NSPopUpButton *codeOption;
-	NSSegmentedControl *originControl;
-	NSSegmentedControl *codeStyleControl;
+	NSSegmentedControl *__weak originControl;
+	NSSegmentedControl *__weak codeStyleControl;
 }
 
-@property (nonatomic, retain) IBOutlet BezierView * bezierView;
-@property (nonatomic, retain) IBOutlet NSTextView * bezierCodeView;
-@property (nonatomic, retain) IBOutlet NSPopUpButton *codeOption;
+@property (nonatomic, strong) IBOutlet BezierView * bezierView;
+@property (nonatomic, strong) IBOutlet NSTextView * bezierCodeView;
+@property (nonatomic, strong) IBOutlet NSPopUpButton *codeOption;
 
-@property (assign) IBOutlet NSSegmentedControl *originControl;
-@property (assign) IBOutlet NSSegmentedControl *codeStyleControl;
+@property (weak) IBOutlet NSSegmentedControl *originControl;
+@property (weak) IBOutlet NSSegmentedControl *codeStyleControl;
 
 - (IBAction) codeOptionChanged:(id)sender;
 - (IBAction) delleteAll:(id)sender;

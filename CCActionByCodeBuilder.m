@@ -20,12 +20,12 @@
 	
 	CGPoint startPoint;
 	
-	for (NSUInteger i = 0; i < [points count]; ++i) {
-		BezierPoint *point = [points objectAtIndex:i];
+	for (NSUInteger i = 0; i < points.count; ++i) {
+		BezierPoint *point = points[i];
 		if (i != 0) {
-			CGPoint endPoint = {[point mainPoint].x-startPoint.x, [point mainPoint].y-startPoint.y};
-			CGPoint control1 = {[point controlPoint1].x-startPoint.x, [point controlPoint1].y-startPoint.y};
-			CGPoint control2 = {[point controlPoint2].x-startPoint.x, [point controlPoint2].y-startPoint.y};
+			CGPoint endPoint = {point.mainPoint.x-startPoint.x, point.mainPoint.y-startPoint.y};
+			CGPoint control1 = {point.controlPoint1.x-startPoint.x, point.controlPoint1.y-startPoint.y};
+			CGPoint control2 = {point.controlPoint2.x-startPoint.x, point.controlPoint2.y-startPoint.y};
 			[lines addObject:[NSString stringWithFormat:@"\t[CCActionBezierBy actionWithDuration:%c#(CCTime)#%c bezier:{\n\t\tccp(%0.2f, %0.2f), ccp(%0.2f, %0.2f), ccp(%0.2f, %0.2f)\t}]\t // normalized control points: %0.2f, %0.2f, %0.2f, %0.2f",
 							  60, 62, // ascii codes for '<' and '>'
 							  endPoint.x, endPoint.y,
@@ -35,7 +35,7 @@
 							  control1.x/endPoint.x, control1.y/endPoint.y,
 							  control2.x/endPoint.x, control2.y/endPoint.y]];
 		}
-		startPoint = CGPointMake([point mainPoint].x, [point mainPoint].y);
+		startPoint = CGPointMake(point.mainPoint.x, point.mainPoint.y);
 	}
 	
 	[lines addObject:@"nil];"];

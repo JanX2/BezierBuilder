@@ -19,7 +19,7 @@
 	[encoder encodePoint:self.controlPoint2 forKey:@"ControlPoint2"];
 }
 
-- (id)initWithCoder:(NSCoder *)decoder {
+- (instancetype)initWithCoder:(NSCoder *)decoder {
 	if (self = [super init]) {
 		self.mainPoint = [decoder decodePointForKey:@"MainPoint"];
 		self.controlPoint1 = [decoder decodePointForKey:@"ControlPoint1"];

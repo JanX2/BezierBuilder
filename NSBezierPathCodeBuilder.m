@@ -17,15 +17,15 @@
 	NSMutableArray *lines = [NSMutableArray array];
 	
 	[lines addObject:@"NSBezierPath *bp = [[NSBezierPath alloc] init];"];
-	for (NSUInteger i = 0; i < [points count]; ++i) {
-		BezierPoint *point = [points objectAtIndex:i];
+	for (NSUInteger i = 0; i < points.count; ++i) {
+		BezierPoint *point = points[i];
 		if (i == 0) {
-			[lines addObject:[NSString stringWithFormat:@"[bp moveToPoint:NSMakePoint(%0.2f, %0.2f)]", [point mainPoint].x, [point mainPoint].y]];
+			[lines addObject:[NSString stringWithFormat:@"[bp moveToPoint:NSMakePoint(%0.2f, %0.2f)]", point.mainPoint.x, point.mainPoint.y]];
 		} else {
 			[lines addObject:[NSString stringWithFormat:@"[bp curveToPoint:NSMakePoint(%0.2f, %0.2f) controlPoint1:NSMakePoint(%0.2f, %0.2f) controlPoint2:NSMakePoint(%0.2f, %0.2f)];", 
-							  [point mainPoint].x, [point mainPoint].y,
-							  [point controlPoint1].x, [point controlPoint1].y,
-							  [point controlPoint2].x, [point controlPoint2].y]];
+							  point.mainPoint.x, point.mainPoint.y,
+							  point.controlPoint1.x, point.controlPoint1.y,
+							  point.controlPoint2.x, point.controlPoint2.y]];
 		}
 	}
 	
@@ -38,14 +38,14 @@
 - (id) objectForBezierPoints {
 	NSArray *points = [self effectiveBezierPoints];
 	NSBezierPath *bp = [[NSBezierPath alloc] init];
-	for (NSUInteger i = 0; i < [points count]; ++i) {
-		BezierPoint *point = [points objectAtIndex:i];
+	for (NSUInteger i = 0; i < points.count; ++i) {
+		BezierPoint *point = points[i];
 		if (i == 0) {
-			[bp moveToPoint:NSMakePoint([point mainPoint].x, [point mainPoint].y)];
+			[bp moveToPoint:NSMakePoint(point.mainPoint.x, point.mainPoint.y)];
 		} else {
-			[bp curveToPoint:NSMakePoint([point mainPoint].x, [point mainPoint].y) 
-			   controlPoint1:NSMakePoint([point controlPoint1].x, [point controlPoint1].y) 
-			   controlPoint2:NSMakePoint([point controlPoint2].x, [point controlPoint2].y)];
+			[bp curveToPoint:NSMakePoint(point.mainPoint.x, point.mainPoint.y) 
+			   controlPoint1:NSMakePoint(point.controlPoint1.x, point.controlPoint1.y) 
+			   controlPoint2:NSMakePoint(point.controlPoint2.x, point.controlPoint2.y)];
 		}
 	}
 	

@@ -21,10 +21,10 @@
 
 @property (copy) NSArray *bezierPoints;
 
-- (NSString *) codeForBezierPoints;
-- (id) objectForBezierPoints;
+@property (nonatomic, readonly, copy) NSString *codeForBezierPoints;
+@property (nonatomic, readonly, strong) id objectForBezierPoints;
 
 // Bezier Points converted for the yOrigin
-- (NSArray *)effectiveBezierPoints;
+@property (nonatomic, readonly, copy) NSArray *effectiveBezierPoints;
 
 @end

@@ -56,7 +56,7 @@ NSPoint NSScaledPoint(NSPoint point, float scale) {
 }
 
 - (void)frameChanged:(NSNotification *)note {
-	[[self delegate] elementsDidChangeInBezierView:self];
+	[self.delegate elementsDidChangeInBezierView:self];
 }
 
 
@@ -66,22 +66,22 @@ NSPoint NSScaledPoint(NSPoint point, float scale) {
 	NSPoint closest = NSMakePoint(-1, -1);
 	
 	float distance = FLT_MAX;
-	for (NSUInteger i = 0; i < [bezierPoints count]; ++i) {
-		BezierPoint *p = [bezierPoints objectAtIndex:i];
+	for (NSUInteger i = 0; i < bezierPoints.count; ++i) {
+		BezierPoint *p = bezierPoints[i];
 		float tDistance = 0;
 		if (i > 0) {
-			tDistance = NSDistanceFromPointToPoint(aPoint, [p controlPoint2]);
+			tDistance = NSDistanceFromPointToPoint(aPoint, p.controlPoint2);
 			if (tDistance <= distance && tDistance <= NEAR_THRESHOLD) {
 				distance = tDistance;
 				closest = NSMakePoint(i, 2);
 			}
-			tDistance = NSDistanceFromPointToPoint(aPoint, [p controlPoint1]);
+			tDistance = NSDistanceFromPointToPoint(aPoint, p.controlPoint1);
 			if (tDistance <= distance && tDistance <= NEAR_THRESHOLD) {
 				distance = tDistance;
 				closest = NSMakePoint(i, 1);
 			}
 		}
-		tDistance = NSDistanceFromPointToPoint(aPoint, [p mainPoint]);
+		tDistance = NSDistanceFromPointToPoint(aPoint, p.mainPoint);
 		if (tDistance <= distance && tDistance <= NEAR_THRESHOLD) {
 			distance = tDistance;
 			closest = NSMakePoint(i, 0);
@@ -93,76 +93,76 @@ NSPoint NSScaledPoint(NSPoint point, float scale) {
 #define CONTROL_OFFSET 20
 
 - (void) updateEditingPointWithPoint:(NSPoint)p withEvent:(NSEvent *)event {
-	BOOL isShiftDown = ([event modifierFlags] & NSShiftKeyMask) > 0;
-	BOOL isCommandDown = ([event modifierFlags] & NSCommandKeyMask) > 0;
-	BezierPoint *point = [bezierPoints objectAtIndex:editingPoint.x];
+	BOOL isShiftDown = (event.modifierFlags & NSShiftKeyMask) > 0;
+	BOOL isCommandDown = (event.modifierFlags & NSCommandKeyMask) > 0;
+	BezierPoint *point = bezierPoints[(NSUInteger)editingPoint.x];
 	
 	if (editingPoint.y == -1) {
-		[point setMainPoint:p];
+		point.mainPoint = p;
 		
 		if (editingPoint.x > 0) {
-			NSPoint c1 = [point controlPoint1];
+			NSPoint c1 = point.controlPoint1;
 			
-			BezierPoint *prevPoint = [bezierPoints objectAtIndex:editingPoint.x - 1];
-			NSPoint prevOrigin = [prevPoint mainPoint];
+			BezierPoint *prevPoint = bezierPoints[(NSUInteger)editingPoint.x - 1];
+			NSPoint prevOrigin = prevPoint.mainPoint;
 			
 			NSPoint trajectory = NSPointSubtractPoint(c1, prevOrigin);
 			NSPoint thingToPointBackAt = NSPointAddToPoint(c1, NSScaledPoint(trajectory, 0.5));
 			
 			NSPoint newC2 = NSInterpolatePoints(thingToPointBackAt, p, 0.33);
-			[point setControlPoint2:newC2];
+			point.controlPoint2 = newC2;
 		}
 	}
 	else if (editingPoint.y == 0) {
-		NSPoint diff = NSPointSubtractPoint(p, [point mainPoint]);
-		[point setMainPoint:p];
+		NSPoint diff = NSPointSubtractPoint(p, point.mainPoint);
+		point.mainPoint = p;
 		
 		if (!isCommandDown) {
-			NSPoint newPoint = NSPointAddToPoint(diff, [point controlPoint2]);
-			[point setControlPoint2:newPoint];
+			NSPoint newPoint = NSPointAddToPoint(diff, point.controlPoint2);
+			point.controlPoint2 = newPoint;
 		}
 		
-		if (!isCommandDown && editingPoint.x < [bezierPoints count] - 1) {
+		if (!isCommandDown && editingPoint.x < bezierPoints.count - 1) {
 			// Update c1 of the next point too
-			BezierPoint *nextPoint = [bezierPoints objectAtIndex:editingPoint.x + 1];
-			NSPoint newPoint = NSPointAddToPoint(diff, [nextPoint controlPoint1]);
-			[nextPoint setControlPoint1:newPoint];
+			BezierPoint *nextPoint = bezierPoints[(NSUInteger)editingPoint.x + 1];
+			NSPoint newPoint = NSPointAddToPoint(diff, nextPoint.controlPoint1);
+			nextPoint.controlPoint1 = newPoint;
 		}
 	} else if (editingPoint.y == 1) {
-		[point setControlPoint1:p];
+		point.controlPoint1 = p;
 		if (!isCommandDown && editingPoint.x > 1) {
 			// Update the previous c2 to keep it in line
-			BezierPoint *prevPoint = [bezierPoints objectAtIndex:editingPoint.x - 1];
-			float controlLength = NSDistanceFromPointToPoint([prevPoint mainPoint], [prevPoint controlPoint2]);
+			BezierPoint *prevPoint = bezierPoints[(NSUInteger)editingPoint.x - 1];
+			float controlLength = NSDistanceFromPointToPoint(prevPoint.mainPoint, prevPoint.controlPoint2);
 			if (isShiftDown) {
-				controlLength = NSDistanceFromPointToPoint([prevPoint mainPoint], p);
+				controlLength = NSDistanceFromPointToPoint(prevPoint.mainPoint, p);
 			}
 			
-			NSPoint trajectory = NSPointSubtractPoint([prevPoint mainPoint], p);
+			NSPoint trajectory = NSPointSubtractPoint(prevPoint.mainPoint, p);
 			NSPoint delta = NSScaledPoint(NSNormalizedPoint(trajectory), controlLength);
-			NSPoint newPoint = NSPointAddToPoint([prevPoint mainPoint], delta);
-			[prevPoint setControlPoint2:newPoint];
+			NSPoint newPoint = NSPointAddToPoint(prevPoint.mainPoint, delta);
+			prevPoint.controlPoint2 = newPoint;
 		}
 	} else if (editingPoint.y == 2) {
-		[point setControlPoint2:p];
-		if (!isCommandDown && editingPoint.x < [bezierPoints count] - 1) {
+		point.controlPoint2 = p;
+		if (!isCommandDown && editingPoint.x < bezierPoints.count - 1) {
 			// Update the next c1 to keep it in line
-			BezierPoint *nextPoint = [bezierPoints objectAtIndex:editingPoint.x + 1];
-			float controlLength = NSDistanceFromPointToPoint([point mainPoint], [nextPoint controlPoint1]);
+			BezierPoint *nextPoint = bezierPoints[(NSUInteger)editingPoint.x + 1];
+			float controlLength = NSDistanceFromPointToPoint(point.mainPoint, nextPoint.controlPoint1);
 			if (isShiftDown) {
-				controlLength = NSDistanceFromPointToPoint([point mainPoint], p);
+				controlLength = NSDistanceFromPointToPoint(point.mainPoint, p);
 			}
 			
-			NSPoint trajectory = NSPointSubtractPoint([point mainPoint], p);
+			NSPoint trajectory = NSPointSubtractPoint(point.mainPoint, p);
 			NSPoint delta = NSScaledPoint(NSNormalizedPoint(trajectory), controlLength);
-			NSPoint newPoint = NSPointAddToPoint([point mainPoint], delta);
-			[nextPoint setControlPoint1:newPoint];
+			NSPoint newPoint = NSPointAddToPoint(point.mainPoint, delta);
+			nextPoint.controlPoint1 = newPoint;
 		}
 	}
 }
 
 - (void)mouseDown:(NSEvent *)theEvent {
-	NSPoint event_location = [theEvent locationInWindow];
+	NSPoint event_location = theEvent.locationInWindow;
 	NSPoint local_point = [self convertPoint:event_location fromView:nil];
 	editingPoint = [self locationOfPathElementNearPoint:local_point];
 	
@@ -171,13 +171,13 @@ NSPoint NSScaledPoint(NSPoint point, float scale) {
 		CGPoint control1 = local_point;
 		CGPoint control2 = local_point;
 		
-		NSUInteger pointCount = [bezierPoints count];
+		NSUInteger pointCount = bezierPoints.count;
 		
-		BezierPoint *lastPoint = [bezierPoints lastObject];
+		BezierPoint *lastPoint = bezierPoints.lastObject;
 		if (pointCount == 1) {
 			// This is the first curve segment, so extrapolating from the
 			// trajectory of the previous segment makes no sense
-			NSPoint prevMain = [lastPoint mainPoint];
+			NSPoint prevMain = lastPoint.mainPoint;
 			
 			control1 = NSInterpolatePoints(prevMain, local_point, 0.3);
 			
@@ -187,8 +187,8 @@ NSPoint NSScaledPoint(NSPoint point, float scale) {
 			control2 = NSInterpolatePoints(thingToPointBackAt, local_point, 0.33);
 		}
 		else if (pointCount > 1) {
-			NSPoint prevC2 = [lastPoint controlPoint2];
-			NSPoint prevMain = [lastPoint mainPoint];
+			NSPoint prevC2 = lastPoint.controlPoint2;
+			NSPoint prevMain = lastPoint.mainPoint;
 			
 			NSPoint trajectory = NSPointSubtractPoint(prevMain, prevC2);
 			control1 = NSPointAddToPoint(prevMain, trajectory);
@@ -199,47 +199,47 @@ NSPoint NSScaledPoint(NSPoint point, float scale) {
 		}
 		
 		BezierPoint *newPoint = [[BezierPoint alloc] init];
-		[newPoint setMainPoint:local_point];
-		[newPoint setControlPoint1:control1];
-		[newPoint setControlPoint2:control2];
+		newPoint.mainPoint = local_point;
+		newPoint.controlPoint1 = control1;
+		newPoint.controlPoint2 = control2;
 		[bezierPoints addObject:newPoint];
 		[newPoint release];
 		
-		[[self delegate] elementsDidChangeInBezierView:self];
+		[self.delegate elementsDidChangeInBezierView:self];
 		
 		//setting y to -1 means that all the control points will be dragged
-		editingPoint = NSMakePoint([bezierPoints count]-1, -1);
+		editingPoint = NSMakePoint(bezierPoints.count-1, -1);
 	}
 }
 
 - (void)mouseDragged:(NSEvent *)theEvent {
-	NSPoint event_location = [theEvent locationInWindow];
+	NSPoint event_location = theEvent.locationInWindow;
 	NSPoint local_point = [self convertPoint:event_location fromView:nil];
 	[self updateEditingPointWithPoint:local_point withEvent:theEvent];
-	[[self delegate] elementsDidChangeInBezierView:self];
+	[self.delegate elementsDidChangeInBezierView:self];
 }
 
 - (void)mouseUp:(NSEvent *)theEvent {
-	NSPoint event_location = [theEvent locationInWindow];
+	NSPoint event_location = theEvent.locationInWindow;
 	NSPoint local_point = [self convertPoint:event_location fromView:nil];
 	[self updateEditingPointWithPoint:local_point withEvent:theEvent];
-	[[self delegate] elementsDidChangeInBezierView:self];
+	[self.delegate elementsDidChangeInBezierView:self];
 }
 
 - (void)deleteBackward:(id)sender {
-	if ([bezierPoints count] > 0) {
+	if (bezierPoints.count > 0) {
 		[bezierPoints removeLastObject];
-		[[self delegate] elementsDidChangeInBezierView:self];
+		[self.delegate elementsDidChangeInBezierView:self];
 	}
 }
 
 - (void)deleteAll:(id)sender {
 	[bezierPoints removeAllObjects];
-	[[self delegate] elementsDidChangeInBezierView:self];
+	[self.delegate elementsDidChangeInBezierView:self];
 }
 
 - (void)keyDown:(NSEvent *)theEvent {
-	[self interpretKeyEvents:[NSArray arrayWithObject:theEvent]];
+	[self interpretKeyEvents:@[theEvent]];
 }
 
 #define HANDLE_WIDTH 5
@@ -248,25 +248,25 @@ NSPoint NSScaledPoint(NSPoint point, float scale) {
 - (void)drawRect:(NSRect)dirtyRect {
 	[[[NSColor redColor] colorWithAlphaComponent:0.6] set];
 	NSBezierPath * extra = [[NSBezierPath alloc] init];
-	for (NSUInteger i = 0; i < [bezierPoints count]; ++i) {
-		BezierPoint *bezierPoint = [bezierPoints objectAtIndex:i];
+	for (NSUInteger i = 0; i < bezierPoints.count; ++i) {
+		BezierPoint *bezierPoint = bezierPoints[i];
 		NSRect r;
 		if (i > 0) {
-			[extra moveToPoint:[[bezierPoints objectAtIndex:i-1] mainPoint]];
-			[extra lineToPoint:[bezierPoint controlPoint1]];
-			[extra moveToPoint:[bezierPoint controlPoint2]];
-			[extra lineToPoint:[bezierPoint mainPoint]];
+			[extra moveToPoint:[bezierPoints[i-1] mainPoint]];
+			[extra lineToPoint:bezierPoint.controlPoint1];
+			[extra moveToPoint:bezierPoint.controlPoint2];
+			[extra lineToPoint:bezierPoint.mainPoint];
 			
-			r = NSMakeRect([bezierPoint controlPoint1].x, [bezierPoint controlPoint1].y, HANDLE_WIDTH, HANDLE_HEIGHT);
+			r = NSMakeRect(bezierPoint.controlPoint1.x, bezierPoint.controlPoint1.y, HANDLE_WIDTH, HANDLE_HEIGHT);
 			r = NSOffsetRect(r, -HANDLE_WIDTH/2, -HANDLE_HEIGHT/2);
 			[extra appendBezierPathWithOvalInRect:r];
 			
-			r = NSMakeRect([bezierPoint controlPoint2].x, [bezierPoint controlPoint2].y, HANDLE_WIDTH, HANDLE_HEIGHT);
+			r = NSMakeRect(bezierPoint.controlPoint2.x, bezierPoint.controlPoint2.y, HANDLE_WIDTH, HANDLE_HEIGHT);
 			r = NSOffsetRect(r, -HANDLE_WIDTH/2, -HANDLE_HEIGHT/2);
 			[extra appendBezierPathWithOvalInRect:r];
 		}
 		
-		r = NSMakeRect([bezierPoint mainPoint].x, [bezierPoint mainPoint].y, HANDLE_WIDTH, HANDLE_HEIGHT);
+		r = NSMakeRect(bezierPoint.mainPoint.x, bezierPoint.mainPoint.y, HANDLE_WIDTH, HANDLE_HEIGHT);
 		r = NSOffsetRect(r, -HANDLE_WIDTH/2, -HANDLE_HEIGHT/2);
 		[extra appendBezierPathWithOvalInRect:r];
 	}
@@ -275,7 +275,7 @@ NSPoint NSScaledPoint(NSPoint point, float scale) {
 	
 	[[NSColor blackColor] set];
 	NSBezierPathCodeBuilder *builder = [[NSBezierPathCodeBuilder alloc] init];
-	[builder setBezierPoints:bezierPoints];
+	builder.bezierPoints = bezierPoints;
 	NSBezierPath * path = [builder objectForBezierPoints];
 	[path stroke];
 }

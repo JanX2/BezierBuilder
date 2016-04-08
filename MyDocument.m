@@ -26,7 +26,7 @@
 	
 	Class builderClass = Nil;
 	
-	switch ([codeStyleControl selectedSegment]) {
+	switch (codeStyleControl.selectedSegment) {
 		case 0:
 			builderClass = [NSBezierPathCodeBuilder class];
 			break;
@@ -48,17 +48,17 @@
 	}
 	
 	CodeBuilder *builder = [[builderClass alloc] init];
-	[builder setBezierPoints:[bezierView bezierPoints]];
-	if ([originControl selectedSegment] == 1) {
-		[builder setYOrigin:[bezierView bounds].size.height];
+	builder.bezierPoints = bezierView.bezierPoints;
+	if (originControl.selectedSegment == 1) {
+		builder.yOrigin = bezierView.bounds.size.height;
 	}
 	else {
-		[builder setYOrigin:0.0];
+		builder.yOrigin = 0.0;
 	}
-	[bezierCodeView setString:[builder codeForBezierPoints]];
+	bezierCodeView.string = [builder codeForBezierPoints];
 	[builder release];
 	
-	NSData *data = [NSKeyedArchiver archivedDataWithRootObject:[bezierView bezierPoints]];
+	NSData *data = [NSKeyedArchiver archivedDataWithRootObject:bezierView.bezierPoints];
 	[[NSUserDefaults standardUserDefaults] setObject:data forKey:kDataKey];
 }
 
@@ -75,7 +75,7 @@
 	[bezierView setNeedsDisplay:YES];
 }
 
-- (id)init
+- (instancetype)init
 {
     self = [super init];
     if (self) {
